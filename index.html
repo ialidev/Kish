@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة Kish - للمبرمجين والمهندسين العراقيين</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased selection:bg-teal-500 selection:text-slate-950 pb-20 md:pb-0">
+
+    <header class="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center font-bold text-slate-950 text-xl shrink-0 shadow-lg shadow-teal-500/20">
+                    🏛️
+                </div>
+                <div>
+                    <h1 class="text-base font-extrabold tracking-tight bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">Kish</h1>
+                    <p class="text-[10px] text-slate-400 hidden sm:block font-medium">المستودع الهندسي العراقي المفتوح</p>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center bg-slate-900 p-1 rounded-xl border border-slate-800/60">
+                <button onclick="switchTab('research-page')" id="tab-research-page" class="nav-tab px-4 py-1.5 text-sm font-semibold rounded-lg bg-teal-500 text-slate-950 transition">
+                    📝 مستودع الأبحاث
+                </button>
+                <button onclick="switchTab('articles-page')" id="tab-articles-page" class="nav-tab px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white transition">
+                    💻 المقالات التقنية
+                </button>
+                <button onclick="switchTab('opinions-page')" id="tab-opinions-page" class="nav-tab px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white transition">
+                    💬 ساحة الآراء
+                </button>
+                <button onclick="switchTab('about-page')" id="tab-about-page" class="nav-tab px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white transition">
+                    ℹ️ عن المنصة
+                </button>
+            </nav>
+
+            <div class="shrink-0">
+                <button onclick="openPublishModal()" class="inline-flex items-center justify-center px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-gradient-to-r from-teal-500 to-emerald-500 text-slate-950 rounded-xl font-bold hover:opacity-90 transition shadow-md">
+                    <span>➕ <span class="hidden sm:inline">انشر الآن</span><span class="sm:hidden">نشر</span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative overflow-hidden py-8 sm:py-12 border-b border-slate-900 bg-gradient-to-b from-slate-900/50 to-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-teal-500/10 text-teal-400 border border-teal-500/20 mb-3 mx-auto">
+                🇮🇶 منصة عراقية 100% وبدون تسجيل دخول
+            </span>
+            <h2 id="hero-title" class="text-xl sm:text-3xl font-extrabold text-white tracking-tight max-w-3xl mx-auto leading-tight px-2 text-center">
+                مستودع الأبحاث الهندسية العراقية
+            </h2>
+            
+            <div id="search-section" class="mt-6 max-w-xl mx-auto px-2 w-full">
+                <div class="relative rounded-xl bg-slate-900 border border-slate-800 p-1.5 flex items-center shadow-2xl">
+                    <input id="searchInput" type="text" oninput="searchContent()" placeholder="البحث الذكي في العناوين والوسوم..." class="w-full bg-transparent border-0 px-3 py-1.5 text-slate-200 placeholder-slate-500 focus:outline-none text-xs sm:text-sm text-center" />
+                    <button onclick="searchContent()" class="bg-slate-800 text-slate-300 px-4 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition shrink-0">بحث</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        
+        <div id="research-page" class="page-content space-y-4">
+            <div class="flex items-center justify-between mb-2 px-1">
+                <h3 class="text-sm sm:text-base font-bold text-slate-400">الأبحاث الأكاديمية المرفوعة</h3>
+                <span class="text-[9px] sm:text-xs text-teal-400 bg-teal-500/5 px-2 py-0.5 rounded border border-teal-500/10">مُحقّق الأكاديمية</span>
+            </div>
+            <div id="researchContainer" class="space-y-4"></div>
+        </div>
+
+        <div id="articles-page" class="page-content space-y-4 hidden">
+            <h3 class="text-sm sm:text-base font-bold text-slate-400 mb-2 px-1 text-center">المقالات والدروس البرمجية المنشورة</h3>
+            <div id="articlesContainer" class="space-y-4"></div>
+        </div>
+
+        <div id="opinions-page" class="page-content space-y-4 hidden text-center">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-xl flex flex-col items-center justify-center">
+                <h3 class="text-sm sm:text-base font-bold text-white mb-1 text-center">شارك رأيك الفني أو الهندسي فوراً</h3>
+                <p class="text-[10px] sm:text-xs text-slate-400 mb-3 text-center">انشر بدون قيود الحسابات، مشاركتك ستظهر فوراً للمجتمع.</p>
+                <textarea id="opinionInput" rows="3" placeholder="ما هي تجربتك أو نقاشك اليوم؟..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-teal-500 transition Residential resize-none text-center"></textarea>
+                <div class="flex justify-center mt-3 w-full">
+                    <button onclick="addOpinion()" class="px-6 py-2 bg-gradient-to-r from-teal-500 to-emerald-500 text-slate-950 text-xs font-bold rounded-lg transition shadow mx-auto">🚀 انشر الرأي</button>
+                </div>
+            </div>
+            <div id="discussionsContainer" class="space-y-3 mt-4 text-right"></div>
+        </div>
+
+        <div id="about-page" class="page-content space-y-8 hidden">
+            <div class="p-6 bg-slate-900/60 border border-slate-800 rounded-2xl space-y-4 text-center flex flex-col items-center justify-center">
+                <div class="flex items-center gap-2 justify-center mx-auto">
+                    <span class="text-xl">💡</span>
+                    <h3 class="text-base sm:text-lg font-bold text-white">ما هي منصة Kish وما وظيفتها?</h3>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed text-center max-w-2xl">
+                    منصة <strong class="text-teal-400">Kish</strong> هي بيئة رقمية حرة ومستقلة مصممة خصيصاً للمجتمع الهندسي والبرمجي في العراق. تهدف المنصة إلى كسر الحواجز التقليدية لمشاركة المعرفة من خلال توفير الوصول الفوري والنشر المباشر <span class="text-emerald-400 font-semibold">بدون الحاجة لإنشاء حساب أو تسجيل دخول</span>.
+                </p>
+            </div>
+
+            <div class="p-6 bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800/80 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center gap-5">
+                <div class="relative h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-gradient-to-tr from-teal-500 via-emerald-400 to-cyan-500 p-0.5 shadow-xl shadow-teal-500/10 shrink-0">
+                    <img src="my-avatar.png" alt="علي أحمد" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="h-full w-full object-cover rounded-full">
+                    <div class="absolute inset-0.5 bg-slate-950 rounded-full hidden flex-col items-center justify-center font-mono font-bold text-teal-400 text-sm sm:text-base">🧑‍💻</div>
+                </div>
+
+                <div class="space-y-3 max-w-2xl mx-auto flex flex-col items-center">
+                    <div>
+                        <h4 class="text-base sm:text-xl font-bold text-white">علي أحمد (ialidev)</h4>
+                        <p class="text-xs text-teal-400 font-medium mt-1">مطور برمجيات مستقل وباحث ورائد أعمال هندسي</p>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed text-center">
+                        مهتم ببناء الأنظمة البرمجية عالية الأداء والحلول مستقلة البنية التي تخدم التحول الرقمي الأكاديمي والمهني المحتدم.
+                    </p>
+                    <div class="pt-2 flex flex-wrap justify-center items-center gap-3 text-xs font-mono">
+                        <a href="https://github.com/ialidev" target="_blank" class="text-slate-300 hover:text-white flex items-center gap-1 bg-slate-950 px-3 py-1 rounded-lg border border-slate-800 transition">🐙 @ialidev</a>
+                        <a href="https://instagram.com/ialidev" target="_blank" class="text-pink-400 hover:text-pink-300 flex items-center gap-1 bg-slate-950 px-3 py-1 rounded-lg border border-slate-800 transition">📸 @ialidev</a>
+                        <a href="mailto:ali@ialidev.com" class="text-teal-400 hover:text-teal-300 flex items-center gap-1 bg-slate-950 px-3 py-1 rounded-lg border border-slate-800 transition">📧 Email</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-md border-t border-slate-900 h-16 flex items-center justify-around px-2 shadow-2xl">
+        <button onclick="switchTab('research-page')" id="mob-tab-research-page" class="mob-tab flex flex-col items-center gap-1 text-teal-400 transition">
+            <span class="text-base">📝</span>
+            <span class="text-[9px] font-bold">الأبحاث</span>
+        </button>
+        <button onclick="switchTab('articles-page')" id="mob-tab-articles-page" class="mob-tab flex flex-col items-center gap-1 text-slate-400 transition">
+            <span class="text-base">💻</span>
+            <span class="text-[9px] font-medium">المقالات</span>
+        </button>
+        <button onclick="switchTab('opinions-page')" id="mob-tab-opinions-page" class="mob-tab flex flex-col items-center gap-1 text-slate-400 transition">
+            <span class="text-base">💬</span>
+            <span class="text-[9px] font-medium">الآراء</span>
+        </button>
+        <button onclick="switchTab('about-page')" id="mob-tab-about-page" class="mob-tab flex flex-col items-center gap-1 text-slate-400 transition">
+            <span class="text-base">ℹ️</span>
+            <span class="text-[9px] font-medium">عن المنصة</span>
+        </button>
+    </div>
+
+    <div id="publishModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl max-w-lg w-full p-5 space-y-3 max-h-[90vh] overflow-y-auto no-scrollbar text-center flex flex-col items-center justify-center">
+            <h3 class="text-base sm:text-lg font-bold text-white">نشر بحث أو مقال في Kish</h3>
+            <p class="text-[11px] text-slate-400">سيتم النشر المفتوح فورياً للحفاظ على جودة وسلاسة المستودع الرقمي.</p>
+            
+            <input type="text" id="postTitle" placeholder="العنوان أو اسم البحث العلمي الرئيسي" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-teal-500 text-center">
+            <input type="text" id="postAuthor" placeholder="اسم الباحث أو الكاتب الثلاثي" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-teal-500 text-center">
+            <input type="text" id="postUniversity" placeholder="الجامعة أو المؤسسة الأكاديمية التابع لها" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-teal-500 text-center">
+            <input type="email" id="postEmail" placeholder="بريدك الإلكتروني للتواصل المهني" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-teal-500 text-center">
+            
+            <textarea id="postContent" rows="3" placeholder="اكتب الكلمات المفتاحية والأوسوم المخصصة للفرز (مثال: اتصالات, 5G, بغداد)..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-teal-500 resize-none text-center"></textarea>
+            
+            <div class="flex items-center justify-center gap-4 pt-2 text-xs sm:text-sm w-full">
+                <button onclick="closePublishModal()" class="px-3 py-2 text-slate-400 hover:text-white">إلغاء</button>
+                <button onclick="submitPost()" class="px-5 py-2 bg-gradient-to-r from-teal-500 to-emerald-500 text-slate-950 font-bold rounded-xl shadow">تأكيد ونشر</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="hidden md:block mt-20 border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
+        <p>Kish - مستودع رقمي بأيدي مهندسين عراقيين لخدمة النتاج العلمي والتقني المحلي. 2026 ©</p>
+    </footer>
+
+    <script>
+        let globalResearch = [];
+        let globalArticles = [];
+
+        function switchTab(targetPageId) {
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => page.classList.add('hidden'));
+            
+            document.getElementById(targetPageId).classList.remove('hidden');
+            
+            const searchSection = document.getElementById('search-section');
+            if(targetPageId === 'about-page') {
+                searchSection.classList.add('hidden');
+            } else {
+                searchSection.classList.remove('hidden');
+            }
+
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('bg-teal-500', 'text-slate-950');
+                tab.classList.add('text-slate-400', 'hover:text-white');
+            });
+            const activeTab = document.getElementById('tab-' + targetPageId);
+            if(activeTab) {
+                activeTab.classList.remove('text-slate-400', 'hover:text-white');
+                activeTab.classList.add('bg-teal-500', 'text-slate-950');
+            }
+
+            const mobTabs = document.querySelectorAll('.mob-tab');
+            mobTabs.forEach(mt => {
+                mt.classList.remove('text-teal-400', 'font-bold');
+                mt.classList.add('text-slate-400', 'font-medium');
+            });
+            const activeMobTab = document.getElementById('mob-tab-' + targetPageId);
+            if(activeMobTab) {
+                activeMobTab.classList.remove('text-slate-400', 'font-medium');
+                activeMobTab.classList.add('text-teal-400', 'font-bold');
+            }
+
+            const heroTitle = document.getElementById('hero-title');
+            if (targetPageId === 'research-page') heroTitle.innerHTML = 'مستودع الأبحاث الهندسية العراقية';
+            if (targetPageId === 'articles-page') heroTitle.innerHTML = 'المقالات البرمجية والدروس التقنية';
+            if (targetPageId === 'opinions-page') heroTitle.innerHTML = 'ساحة الآراء والنقاشات الحرة السريعة';
+            if (targetPageId === 'about-page') heroTitle.innerHTML = 'ما وراء منصة Kish الرقمية';
+        }
+
+        function fetchResearch() {
+            fetch('api.php?action=get_research')
+                .then(res => res.json())
+                .then(data => {
+                    globalResearch = data;
+                    renderResearch(data);
+                })
+                .catch(err => console.error("Error fetching research:", err));
+        }
+
+        function renderResearch(data) {
+            const container = document.getElementById('researchContainer');
+            if(!container) return;
+            if(data.length === 0) {
+                container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">لا توجد أبحاث مرفوعة حالياً.</p>`;
+                return;
+            }
+            container.innerHTML = data.map(res => `
+                <div class="p-4 sm:p-5 bg-slate-900/60 border border-slate-800/80 rounded-xl hover:border-slate-700 transition shadow-sm text-center flex flex-col items-center justify-center">
+                    <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[10px] sm:text-xs text-slate-400 mb-1.5">
+                        <span class="font-semibold text-slate-200">${res.author}</span> • 
+                        <span class="text-teal-400">${res.university}</span> • 
+                        <span>${res.created_at || '2026'}</span>
+                    </div>
+                    <h4 class="text-sm sm:text-base font-bold text-white hover:text-teal-400 transition cursor-pointer leading-snug">${res.title}</h4>
+                    <div class="mt-2 flex flex-wrap justify-center gap-1.5">
+                        ${res.tags ? res.tags.split(',').map(t => `<span class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-slate-400">#${t.trim()}</span>`).join('') : ''}
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800/60 flex flex-wrap items-center justify-between gap-2 text-[11px] w-full">
+                        <div class="flex items-center gap-2.5 text-slate-400">
+                            <a href="mailto:${res.email}" class="text-teal-400 hover:underline">📧 إيميل التواصل</a>
+                        </div>
+                        <button onclick="window.open('uploads/${res.file_name || 'research_paper.pdf'}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-md transition">📥 استعراض الملف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function fetchArticles() {
+            fetch('api.php?action=get_articles')
+                .then(res => res.json())
+                .then(data => {
+                    globalArticles = data;
+                    renderArticles(data);
+                })
+                .catch(err => console.error("Error fetching articles:", err));
+        }
+
+        function renderArticles(data) {
+            const container = document.getElementById('articlesContainer');
+            if(!container) return;
+            if(data.length === 0) {
+                container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">لا توجد مقالات تقنية منشورة حالياً.</p>`;
+                return;
+            }
+            container.innerHTML = data.map(art => `
+                <div class="p-4 sm:p-5 bg-slate-900/40 border border-slate-800/50 rounded-xl hover:border-slate-700/80 transition text-center flex flex-col items-center justify-center">
+                    <div class="flex items-center justify-center gap-2 text-[10px] sm:text-xs text-slate-400 mb-1.5">
+                        <span class="font-medium text-slate-300">${art.author}</span> • <span>${art.created_at || '2026'}</span> • <span>قراءة ${art.read_time || '5 د'}</span>
+                    </div>
+                    <h4 class="text-sm sm:text-lg font-bold text-white hover:text-teal-400 transition cursor-pointer mb-1.5">${art.title}</h4>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed line-clamp-3 mb-3">${art.excerpt}</p>
+                    <div class="pt-2.5 border-t border-slate-800/40 flex items-center justify-between text-[11px] w-full">
+                        <a href="mailto:${art.email}" class="text-teal-400 hover:underline">📧 مراسلة الكاتب</a>
+                        <span class="text-teal-400 cursor-pointer">اقرأ المقال كاملاً ←</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function fetchOpinions() {
+            fetch('api.php?action=get_opinions')
+                .then(res => res.json())
+                .then(data => {
+                    renderOpinions(data);
+                })
+                .catch(err => console.error("Error fetching opinions:", err));
+        }
+
+        function renderOpinions(data) {
+            const container = document.getElementById('discussionsContainer');
+            if(!container) return;
+            if(data.length === 0) {
+                container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">كن أول من يشارك برأيه الهندسي اليوم!</p>`;
+                return;
+            }
+            container.innerHTML = data.map(op => `
+                <div class="p-3.5 bg-slate-900/30 border border-slate-800/60 rounded-xl space-y-2.5 text-center flex flex-col items-center justify-center">
+                    <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${op.content}</p>
+                    <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-500 pt-2 border-t border-slate-800/40 w-full">
+                        <button onclick="voteOpinion(${op.id}, this)" class="flex items-center gap-1 hover:text-teal-400 transition bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
+                            ▲ <span>${op.votes}</span>
+                        </button>
+                        <div class="flex items-center gap-2">
+                            <span>💬 ${op.comments || 0} تعليق</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addOpinion() {
+            const input = document.getElementById('opinionInput');
+            if(!input || !input.value.trim()) return alert("يرجى كتابة نص الرأي أولاً!");
+            
+            fetch('api.php?action=add_opinion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: input.value })
+            })
+            .then(res => res.json())
+            .then(res => {
+                if(res.success) {
+                    input.value = "";
+                    fetchOpinions();
+                }
+            })
+            .catch(err => console.error("Error adding opinion:", err));
+        }
+
+        function voteOpinion(id, button) {
+            fetch('api.php?action=vote_opinion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            })
+            .then(res => res.json())
+            .then(res => {
+                if(res.success) {
+                    const span = button.querySelector('span');
+                    span.innerText = parseInt(span.innerText) + 1;
+                }
+            })
+            .catch(err => console.error("Error updating vote:", err));
+        }
+
+        function searchContent() {
+            const queryInput = document.getElementById('searchInput');
+            if(!queryInput) return;
+            const query = queryInput.value.toLowerCase();
+            
+            const filteredResearch = globalResearch.filter(r => 
+                r.title.toLowerCase().includes(query) || 
+                (r.tags && r.tags.toLowerCase().includes(query))
+            );
+            const filteredArticles = globalArticles.filter(a => 
+                a.title.toLowerCase().includes(query) || 
+                a.excerpt.toLowerCase().includes(query)
+            );
+            
+            renderResearch(filteredResearch);
+            renderArticles(filteredArticles);
+        }
+
+        function openPublishModal() { 
+            const modal = document.getElementById('publishModal');
+            if(modal) modal.classList.remove('hidden'); 
+        }
+        
+        function closePublishModal() { 
+            const modal = document.getElementById('publishModal');
+            if(modal) modal.classList.add('hidden'); 
+        }
+
+        function submitPost() {
+            const title = document.getElementById('postTitle').value;
+            const author = document.getElementById('postAuthor').value;
+            const university = document.getElementById('postUniversity').value;
+            const email = document.getElementById('postEmail').value;
+            const content = document.getElementById('postContent').value; 
+
+            if(!title || !author || !email || !university) return alert("يرجى ملء كافة الحقول الأساسية!");
+            
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('author', author);
+            formData.append('university', university); 
+            formData.append('tags', content); 
+            formData.append('email', email);
+            formData.append('file_name', 'research_paper.pdf');
+
+            fetch('api.php?action=add_research', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(res => {
+                if(res.success) {
+                    alert("تم النشر بنجاح في المستودع المفتوح لمنصة كيش!");
+                    closePublishModal();
+                    
+                    document.getElementById('postTitle').value = "";
+                    document.getElementById('postAuthor').value = "";
+                    document.getElementById('postUniversity').value = "";
+                    document.getElementById('postEmail').value = "";
+                    document.getElementById('postContent').value = "";
+                    
+                    fetchResearch();
+                } else {
+                    alert("حدث خطأ أثناء إتمام عملية النشر.");
+                }
+            })
+            .catch(err => console.error("Error submitting post:", err));
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchResearch();
+            fetchArticles();
+            fetchOpinions();
+        });
+    </script>
+</body>
+</html>
